@@ -11,6 +11,7 @@
 //   ANTHROPIC_API_KEY   turns on "Describe a change" + Run          (optional)
 //   GITHUB_REPO         default andersonirmler/soberollers-site
 //   GITHUB_BRANCH       default main
+//   DATA_REPO           PRIVATE repo for registrations, default andersonirmler/soberollers-data
 import http from 'node:http';
 import crypto from 'node:crypto';
 
@@ -19,6 +20,7 @@ const REPO = ENV.GITHUB_REPO || 'andersonirmler/soberollers-site';
 const BRANCH = ENV.GITHUB_BRANCH || 'main';
 const GH = (ENV.GITHUB_API || 'https://api.github.com').replace(/\/$/, '');
 const ANTHROPIC = (ENV.ANTHROPIC_API || 'https://api.anthropic.com').replace(/\/$/, '');
+const DATA_REPO = ENV.DATA_REPO || 'andersonirmler/soberollers-data';
 const PAGE = 'index.html';
 const OPEN = '<script type="application/json" id="mim-content">';
 const ORIGINS = (ENV.ALLOWED_ORIGINS || 'https://soberollers.com,https://www.soberollers.com,https://soberollers-site.onrender.com').split(',').map(s => s.trim()).filter(Boolean);
@@ -48,8 +50,8 @@ function tooMany(ip) {
 }
 
 /* ---------- GitHub ---------- */
-async function gh(path, opts = {}) {
-  const r = await fetch(GH + '/repos/' + REPO + path, {
+async function gh(path, opts = {}, repo = REPO) {
+  const r = await fetch(GH + '/repos/' + repo + path, {
     ...opts,
     headers: { Authorization: 'Bearer ' + ENV.GITHUB_TOKEN, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'soberollers-admin', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) }
   });
@@ -102,6 +104,55 @@ function embed(html, content) {
   // Escape "<" so nothing in an edit can ever end the script block
   const json = JSON.stringify(content).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
   return html.slice(0, i + OPEN.length) + json + html.slice(j);
+}
+
+
+/* ---------- registrations: one private file per skater, never deleted ---------- */
+const REG_ID = /^SM27-[A-Z0-9]{4,16}-[A-Z0-9]{4}$/;
+const REG_FIELDS = { pass: 10, first_name: 80, last_name: 80, email: 200, phone: 40, dob: 10, gender: 10, street: 200, city: 100, state: 100, zip: 20, country: 100, tshirt: 4, team: 120, discount_code: 60, ec_name: 120, ec_relationship: 80, ec_phone: 40, medical: 2000, guardian_name: 120, guardian_email: 200, guardian_phone: 40, agree_refund: 3, agree_waiver: 3, agree_rules: 3, signature: 120, guardian_signature: 120, signed_at: 40 };
+const RANK = { started: 0, pending: 1, paid: 2 };
+const regHits = new Map();
+function regTooMany(ip) {
+  const now = Date.now(), list = (regHits.get(ip) || []).filter(t => now - t < 60 * 60 * 1000);
+  list.push(now); regHits.set(ip, list); return list.length > 120;
+}
+const dgh = (path, opts) => gh(path, opts, DATA_REPO);
+async function readReg(id) {
+  const r = await dgh('/contents/registrations/' + id + '.json?ref=' + BRANCH);
+  if (r.status === 404) return null;
+  if (!r.ok) throw Object.assign(new Error('data read ' + r.status), { status: 502 });
+  const j = await r.json();
+  return { sha: j.sha, data: JSON.parse(Buffer.from(j.content, 'base64').toString('utf8')) };
+}
+async function writeReg(id, change, message) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const cur = await readReg(id);
+    const next = change(cur ? cur.data : null);
+    if (!next) return cur && cur.data;
+    const r = await dgh('/contents/registrations/' + id + '.json', { method: 'PUT', body: JSON.stringify({ message, branch: BRANCH, content: Buffer.from(JSON.stringify(next, null, 2)).toString('base64'), ...(cur ? { sha: cur.sha } : {}) }) });
+    if (r.ok) { cache.set(id, next); return next; }
+    if (r.status === 409 || r.status === 422) continue;
+    throw Object.assign(new Error('data write ' + r.status), { status: 502 });
+  }
+  throw Object.assign(new Error('conflict'), { status: 409 });
+}
+const cache = new Map(); // id -> data, plus blob sha cache
+const blobCache = new Map();
+async function listRegs() {
+  const r = await dgh('/git/trees/' + BRANCH + '?recursive=1');
+  if (r.status === 404 || r.status === 409) return []; // empty repo
+  if (!r.ok) throw Object.assign(new Error('data list ' + r.status), { status: 502 });
+  const files = ((await r.json()).tree || []).filter(f => f.type === 'blob' && /^registrations\/SM27-[A-Z0-9-]+\.json$/.test(f.path));
+  const out = [];
+  for (let i = 0; i < files.length; i += 8) {
+    out.push(...await Promise.all(files.slice(i, i + 8).map(async f => {
+      if (blobCache.has(f.sha)) return blobCache.get(f.sha);
+      const b = await dgh('/git/blobs/' + f.sha);
+      if (!b.ok) return null;
+      try { const d = JSON.parse(Buffer.from((await b.json()).content, 'base64').toString('utf8')); blobCache.set(f.sha, d); return d; } catch { return null; }
+    })));
+  }
+  return out.filter(Boolean);
 }
 
 /* ---------- HTTP ---------- */
@@ -170,7 +221,55 @@ const routes = {
     const d = await r.json();
     return [200, { text: (d.content || []).filter(c => c.type === 'text').map(c => c.text).join('') }];
   },
-  async 'GET /api/health'() { return [200, { ok: true, password: !!ENV.ADMIN_PASSWORD, github: !!ENV.GITHUB_TOKEN, deployHook: !!ENV.RENDER_DEPLOY_HOOK, ai: !!ENV.ANTHROPIC_API_KEY }]; }
+  async 'POST /api/register'(b, ip) {
+    if (!ENV.GITHUB_TOKEN) return [503, { error: 'not set up' }];
+    if (regTooMany(ip)) return [429, { error: 'Too many saves. Wait a little.' }];
+    const id = String(b.registration_id || '');
+    if (!REG_ID.test(id)) return [400, { error: 'bad id' }];
+    const status = b.status === 'pending' ? 'pending' : 'started';
+    const step = Math.max(1, Math.min(5, parseInt(b.step, 10) || 1));
+    const incoming = {};
+    for (const [k, max] of Object.entries(REG_FIELDS)) if (b[k] != null && b[k] !== '') incoming[k] = clean(b[k], max);
+    if (incoming.pass && !/^(full|thu|fri|sat|sun)$/.test(incoming.pass)) return [400, { error: 'bad pass' }];
+    const age = Number(b.age_on_event_day); const price = Number(b.price);
+    const now = new Date().toISOString();
+    const saved = await writeReg(id, cur => {
+      const base = cur || { registration_id: id, created_at: now, status: 'started', payment_status: 'unpaid', step: 0, history: [] };
+      const next = { ...base, ...incoming, updated_at: now };
+      if (Number.isFinite(age) && age >= 0 && age < 120) next.age_on_event_day = Math.floor(age);
+      if (Number.isFinite(price) && price >= 0 && price < 10000) next.price = price;
+      if ((RANK[status] || 0) > (RANK[base.status] || 0)) next.status = status;
+      next.step = Math.max(base.step || 0, step);
+      // keep every version ever typed in, newest first (memory of all info entered)
+      const changed = Object.keys(incoming).filter(k => incoming[k] !== base[k]);
+      if (changed.length) next.history = [{ at: now, step, values: Object.fromEntries(changed.map(k => [k, incoming[k]])) }, ...(base.history || [])].slice(0, 200);
+      return next;
+    }, 'Registration ' + id + ' (' + status + ', step ' + step + ')');
+    return [200, { ok: true, registration_id: id, status: saved.status }];
+  },
+  async 'POST /api/registrations'(b) {
+    if (!checkToken(b.token)) return [401, { error: 'signed out' }];
+    if (!ENV.GITHUB_TOKEN) return [503, { error: 'GITHUB_TOKEN is not set on the server.' }];
+    return [200, { registrations: await listRegs() }];
+  },
+  async 'POST /api/update'(b) {
+    if (!checkToken(b.token)) return [401, { error: 'signed out' }];
+    const id = String(b.registration_id || '');
+    if (!REG_ID.test(id)) return [400, { error: 'bad id' }];
+    const now = new Date().toISOString();
+    const saved = await writeReg(id, cur => {
+      if (!cur) return null;
+      const next = { ...cur, updated_at: now };
+      if (b.bib != null) next.bib = clean(b.bib, 12).trim();
+      if (b.checked_in != null) { next.checked_in = !!b.checked_in; next.checked_in_at = b.checked_in ? now : null; }
+      if (b.payment_status === 'paid' && cur.payment_status !== 'paid') { next.payment_status = 'paid'; next.status = 'paid'; next.amount_paid = cur.price; next.paid_at = now; }
+      if (b.payment_status === 'pending' && cur.payment_status === 'paid') { next.payment_status = 'unpaid'; next.status = 'pending'; next.amount_paid = null; }
+      return next;
+    }, 'Admin update ' + id);
+    if (!saved) return [404, { error: 'not found' }];
+    return [200, { ok: true, registration: saved }];
+  },
+  async 'GET /api/health'() { return [200, { ok: true, password: !!ENV.ADMIN_PASSWORD, github: !!ENV.GITHUB_TOKEN, deployHook: !!ENV.RENDER_DEPLOY_HOOK, ai: !!ENV.ANTHROPIC_API_KEY, dataRepo: DATA_REPO }]; }
 };
 
 http.createServer(async (req, res) => {
