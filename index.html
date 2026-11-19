@@ -360,6 +360,262 @@ a.photo{text-decoration:none;color:inherit}
 
 .route[hidden]{display:none}
 </style>
+<style id="sbr-admin-css">
+/* ===== Admin sign-in + dashboard (same as Miami Inline Marathon) ===== */
+/* ===== Admin sign-in + dashboard ===== */
+.admin-login [hidden],.admin-dialog [hidden]{display:none!important}
+.admin-link{}
+
+.admin-login{padding:0;border:0;width:min(400px,94vw);background:var(--paper);color:var(--ink);border-radius:6px}
+.admin-login::backdrop,.admin-dialog::backdrop{background:#080d15cf;backdrop-filter:blur(5px)}
+.admin-login form{padding:24px 28px 28px;display:flex;flex-direction:column}
+.adm-login-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.admin-login .close-dialog{color:var(--ink);border-color:var(--line)}
+.admin-login h2{font-size:36px;line-height:1.05}
+.adm-login-help{color:var(--muted);font-size:14px;margin:6px 0 22px}
+.adm-login-label{font-size:12px;font-weight:700;margin-bottom:6px}
+.admin-login input[type=password],.admin-login input#admin-pass{font:16px Arial,sans-serif;padding:12px;border:1px solid #c5cac4;border-radius:3px;min-height:48px;background:#fff;color:var(--ink)}
+.admin-login input#admin-pass:focus{outline:3px solid #087caa33;border-color:#087caa}
+.adm-login-show{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:10px;min-height:32px}
+.adm-login-err{color:#a00044;font-size:13px;font-weight:700;min-height:20px;margin:6px 0 10px}
+.admin-login .btn{width:100%}
+.admin-login .btn:disabled{opacity:.6;cursor:wait}
+
+.admin-dialog{padding:0;border:0;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;margin:0;background:#eef0e9;color:var(--ink)}
+.admin-dialog[open]{display:block}
+.adm-shell{height:100%;display:flex;flex-direction:column;position:relative}
+.adm-top{display:flex;align-items:center;gap:18px;padding:12px 28px;background:var(--ink);color:#fff;flex:none}
+.adm-brand{display:flex;align-items:center;gap:14px;margin-right:auto}
+.adm-brand img{width:92px;height:40px;object-fit:contain;background:#fff;border-radius:3px;padding:3px 6px}
+.adm-kicker{display:block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.adm-brand strong{font:400 22px/1.1 Anton,Impact,sans-serif;text-transform:uppercase}
+.adm-sample{background:var(--yellow);color:var(--ink);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:7px 12px;border-radius:3px}
+.adm-btn,.adm-btn-ghost{font:800 12px Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;min-height:42px;padding:0 16px;border-radius:3px;border:1px solid var(--ink);background:var(--ink);color:#fff;white-space:nowrap}
+.adm-btn:hover{background:var(--dark-panel)}
+.adm-btn-ghost{background:transparent;color:inherit;border-color:currentColor}
+.adm-top .adm-btn-ghost{color:#fff;border-color:#6b7378}
+.adm-tabs{display:flex;gap:4px;padding:0 28px;background:#fff;border-bottom:1px solid var(--line);flex:none;overflow-x:auto}
+.adm-tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:16px 14px 13px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;min-height:48px}
+.adm-tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--pink)}
+.adm-main{flex:1;overflow:auto;padding:26px 28px 60px}
+.adm-main>section{max-width:1240px;margin:0 auto}
+.adm-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:20px}
+.adm-kpi{background:#fff;border:1px solid var(--line);border-radius:4px;padding:16px 18px}
+.adm-kpi.is-warn{border-color:#d9a400;background:#fffbe0}
+.adm-kpi-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.adm-kpi-val{display:block;font:400 34px/1.15 Anton,Impact,sans-serif;margin-top:6px}
+.adm-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.adm-card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:20px 22px;margin-bottom:18px}
+.adm-card h3{font:700 15px Arial,sans-serif;text-transform:none;letter-spacing:0;margin-bottom:14px}
+.adm-card-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.adm-card-head h3{margin:0}
+.adm-h3-gap{margin-top:24px}
+.adm-bar-row{display:grid;grid-template-columns:190px 1fr 36px;align-items:center;gap:12px;padding:8px 0;font-size:13px}
+.adm-bar{height:12px;background:var(--soft);border-radius:6px;overflow:hidden}
+.adm-bar span{display:block;height:100%;background:var(--ink);border-radius:6px}
+.adm-bar-row b{text-align:right}
+.adm-minis{display:flex;gap:12px}
+.adm-mini{flex:1;background:var(--soft);border-radius:4px;padding:12px 14px}
+.adm-mini strong{display:block;font:400 26px/1.1 Anton,Impact,sans-serif}
+.adm-mini span{font-size:12px;color:var(--muted)}
+.adm-recent{list-style:none;margin:0;padding:0}
+.adm-recent li{display:grid;grid-template-columns:1fr auto auto;gap:4px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.adm-recent li small{grid-column:1/-1;color:var(--muted)}
+.adm-link{background:none;border:0;padding:0;font-weight:700;color:var(--ink);text-align:left;text-decoration:underline;text-decoration-color:#bbb;text-underline-offset:3px;min-height:28px}
+.adm-link:hover{text-decoration-color:var(--pink)}
+.adm-pill{display:inline-block;font-size:11px;font-weight:800;padding:4px 9px;border-radius:20px;white-space:nowrap}
+.adm-pill.is-paid{background:#dff3e4;color:#14532d}
+.adm-pill.is-pending{background:#fff1c2;color:#6b4e00}
+.adm-tag{display:inline-block;margin-left:7px;font-size:10px;font-weight:800;padding:2px 6px;border-radius:3px;background:#e6ecf5;color:#1d3a6b;vertical-align:middle}
+.adm-tag.is-med{background:#fde2ec;color:#8a0038}
+.adm-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.adm-toolbar select,.adm-search input,.adm-ci-bib input,.adm-d-race input[inputmode]{font:14px Arial,sans-serif;min-height:42px;padding:0 12px;border:1px solid #c5cac4;border-radius:3px;background:#fff;color:var(--ink)}
+.adm-search{flex:1;min-width:220px}
+.adm-search input{width:100%}
+.adm-count{font-size:13px;font-weight:700;margin-bottom:10px}
+.adm-muted{color:var(--muted);font-weight:400}
+.adm-table-wrap{background:#fff;border:1px solid var(--line);border-radius:4px;overflow:auto}
+.adm-card .adm-table-wrap{border:0}
+.adm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:820px}
+.adm-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#f7f8f4;border-bottom:1px solid var(--line);padding:0 12px;position:sticky;top:0}
+.adm-table th button{background:none;border:0;font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit;padding:12px 0;min-height:40px}
+.adm-table th[aria-sort=ascending] button:after{content:' ▲'}
+.adm-table th[aria-sort=descending] button:after{content:' ▼'}
+.adm-table td{padding:11px 12px;border-bottom:1px solid #edefe9;vertical-align:middle}
+.adm-table tbody tr:hover{background:#fafbf7}
+.adm-mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,Consolas,monospace}
+.adm-empty{padding:24px;text-align:center;color:var(--muted);font-size:14px}
+.adm-ci-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.adm-ci{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 16px}
+.adm-ci.is-in{background:#f1f8f2;border-color:#b9dcc1}
+.adm-ci strong{display:block;font-size:15px}
+.adm-ci div span{font-size:12px;color:var(--muted)}
+.adm-ci-bib{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.adm-ci-bib input{width:90px}
+.adm-ci .adm-btn,.adm-ci .adm-btn-ghost{min-width:110px;min-height:44px}
+.adm-ci-note{margin-top:14px;font-size:13px}
+.adm-med-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.adm-med-card{border:1px solid var(--line);border-left:3px solid var(--pink);border-radius:3px;padding:14px 16px;font-size:13px;display:flex;flex-direction:column;gap:4px}
+.adm-med-card strong{font-size:14px}
+.adm-med-note{font-weight:700;color:#8a0038}
+.adm-detail{position:absolute;top:0;right:0;bottom:0;width:min(460px,100vw);background:#fff;border-left:1px solid var(--line);box-shadow:-12px 0 40px #14212622;overflow:auto;z-index:5;animation:drawer-in .2s ease-out}
+.adm-d-head{display:flex;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
+.adm-d-head h3{font-size:28px;line-height:1.05}
+.adm-d-head p{font-size:12px;margin-top:6px}
+.adm-detail .close-dialog{color:var(--ink);border-color:var(--line);flex:none}
+.adm-d-race{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:16px 22px;background:var(--soft)}
+.adm-d-race label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700}
+.adm-d-race input[inputmode]{width:110px}
+.adm-d-check{flex-direction:row!important;align-items:center;gap:8px!important;min-height:42px;font-size:14px!important}
+.adm-d-check input{width:18px;height:18px}
+.adm-d-race p{width:100%;font-size:12px}
+#adm-d-body{padding:6px 22px 30px}
+.adm-alert{margin-top:16px;background:#fde2ec;border-left:3px solid var(--pink);padding:12px 14px;border-radius:3px}
+.adm-alert strong{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#8a0038}
+.adm-alert p{font-size:14px;margin-top:4px}
+.adm-d-sec{padding:16px 0;border-bottom:1px solid var(--line)}
+.adm-d-sec h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px}
+.adm-d-sec dl{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin:0;font-size:13px}
+.adm-d-sec dt{color:var(--muted)}
+.adm-d-sec dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:1000px){.adm-kpis{grid-template-columns:repeat(3,1fr)}.adm-cols{grid-template-columns:1fr}}
+@media(max-width:600px){
+.adm-top{padding:10px 16px;flex-wrap:wrap}.adm-brand img{display:none}.adm-sample{order:3;width:100%;text-align:center}
+.adm-tabs{padding:0 10px}.adm-main{padding:18px 14px 50px}
+.adm-kpis{grid-template-columns:repeat(2,1fr);gap:10px}.adm-kpi-val{font-size:28px}
+.adm-bar-row{grid-template-columns:120px 1fr 30px}
+.adm-ci{grid-template-columns:1fr auto;}.adm-ci>div{grid-column:1/-1}
+.adm-d-sec dl{grid-template-columns:1fr}.adm-d-sec dt{margin-top:6px}
+}
+/* ===== Website editor — simple black & white ===== */
+.mim-ui [hidden],.mim-edit-bar[hidden]{display:none!important}
+.mim-ui{--ed-ink:#111;--ed-mid:#6b6b6b;--ed-line:#e6e6e6;--ed-soft:#f4f4f4}
+
+/* page while editing */
+body.mim-editing{padding-bottom:150px}
+body.mim-editing .mim-ed{cursor:text;border-radius:8px;transition:box-shadow .18s ease}
+@media(hover:hover){body.mim-editing:not(.mim-pointing) .mim-ed:hover{box-shadow:0 0 0 2px rgb(0 0 0 / .14)}}
+body.mim-editing img.mim-ed-img{cursor:pointer;transition:box-shadow .18s ease}
+@media(hover:hover){body.mim-editing:not(.mim-pointing) img.mim-ed-img:hover{box-shadow:0 0 0 3px rgb(0 0 0 / .2)}}
+body.mim-editing .mim-changed{box-shadow:0 0 0 2px #111!important;border-radius:8px}
+body.mim-pointing,body.mim-pointing *{cursor:default!important}
+.mim-hl{position:fixed;z-index:58;pointer-events:none;border-radius:14px;border:2px solid #111;background:rgb(0 0 0 / .04);transition:top .12s ease,left .12s ease,width .12s ease,height .12s ease}
+.mim-sel{border-width:2px;box-shadow:0 0 0 5px rgb(0 0 0 / .08);background:transparent}
+
+/* the bar */
+.mim-edit-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;width:min(760px,calc(100vw - 24px));background:#fff;color:#111;border-radius:22px;padding:10px 10px 8px;box-shadow:0 12px 40px rgb(0 0 0 / .18),0 0 0 1px rgb(0 0 0 / .08);font-family:Arial,Helvetica,sans-serif;animation:mim-rise .28s ease both}
+@keyframes mim-rise{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+.mim-edit-bar>*{min-width:0}
+.mim-run{display:flex;align-items:center;gap:6px;width:100%;min-width:0;background:var(--ed-soft);border-radius:16px;padding:5px}
+.mim-run:focus-within{background:#fff;box-shadow:0 0 0 1.5px #111}
+.mim-run-field{flex:1;display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}
+.mim-run input[type=text]{flex:1;min-width:0;border:0;background:transparent;font:16px Arial,sans-serif;color:#111;min-height:44px;padding:0 6px}
+.mim-run input[type=text]::placeholder{color:#8a8a8a}
+.mim-run input[type=text]:focus{outline:none}
+.mim-icon-btn{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:12px;background:transparent;color:#111;cursor:pointer;transition:background .15s}
+.mim-icon-btn:hover{background:rgb(0 0 0 / .06)}
+.mim-icon-btn[aria-pressed=true]{background:#111;color:#fff}
+.mim-icon-btn:focus-visible,.mim-run-go:focus-visible,.mim-text-btn:focus-visible,.mim-publish:focus-visible,.mim-x:focus-visible{outline:2px solid #111;outline-offset:2px}
+.mim-attach input,.mim-choose input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.mim-attach:focus-within{outline:2px solid #111;outline-offset:2px}
+.mim-run-go{flex:none;min-height:44px;padding:0 20px;border:0;border-radius:12px;background:#111;color:#fff;font:700 14px Arial,sans-serif;cursor:pointer;transition:opacity .15s}
+.mim-run-go:hover:not(:disabled){opacity:.85}
+.mim-run-go:disabled{opacity:.45;cursor:wait}
+.mim-chip{display:inline-flex;align-items:center;gap:2px;flex:none;max-width:min(42vw,360px);background:#111;color:#fff;border-radius:10px;padding:3px 3px 3px 10px;font:700 12px Arial,sans-serif}
+.mim-chip>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mim-chip button{border:0;background:transparent;color:#fff;border-radius:8px;min-height:30px;min-width:30px;padding:0 8px;font:700 12px Arial,sans-serif;cursor:pointer}
+.mim-chip button:hover{background:rgb(255 255 255 / .16)}
+.mim-eb-foot{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:6px 6px 0;min-height:40px}
+.mim-run-msg{font-size:13px;color:var(--ed-mid);min-width:0;flex:1;line-height:1.4}
+.mim-eb-actions{display:flex;align-items:center;gap:4px;flex:none}
+.mim-pending{font-size:13px;font-weight:700;margin-right:6px}
+.mim-text-btn{background:none;border:0;border-radius:10px;min-height:38px;padding:0 12px;font:700 13px Arial,sans-serif;color:#111;cursor:pointer}
+.mim-text-btn:hover{background:rgb(0 0 0 / .06)}
+.mim-publish{min-height:40px;padding:0 18px;border:0;border-radius:12px;background:#111;color:#fff;font:700 13px Arial,sans-serif;cursor:pointer;transition:opacity .15s}
+.mim-publish:hover:not(:disabled){opacity:.85}
+.mim-publish:disabled{opacity:.45;cursor:wait}
+
+/* popups */
+.mim-dlg{padding:0;border:0;width:min(460px,calc(100vw - 24px));max-height:88dvh;background:#fff;color:#111;border-radius:20px;box-shadow:0 20px 60px rgb(0 0 0 / .22);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+.mim-dlg[open]{display:flex;flex-direction:column;animation:mim-pop .2s ease both}
+@keyframes mim-pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.mim-dlg::backdrop{background:rgb(0 0 0 / .32);animation:mim-fade .2s ease both}
+@keyframes mim-fade{from{opacity:0}to{opacity:1}}
+.mim-dlg-body{padding:18px 20px 6px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.mim-dlg-top{display:flex;justify-content:space-between;align-items:center}
+.mim-dlg h2{font:700 17px Arial,sans-serif;text-transform:none;letter-spacing:0;line-height:1.3}
+.mim-x{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:10px;background:transparent;color:#111;cursor:pointer}
+.mim-x:hover{background:rgb(0 0 0 / .06)}
+.mim-dlg textarea,.mim-dlg input[type=text]{width:100%;font:16px/1.5 Arial,sans-serif;color:#111;background:var(--ed-soft);border:1.5px solid transparent;border-radius:12px;padding:12px 14px;resize:vertical;transition:border-color .15s,background .15s}
+.mim-dlg textarea:focus,.mim-dlg input[type=text]:focus{outline:none;background:#fff;border-color:#111}
+.mim-was{font-size:13px;color:var(--ed-mid);line-height:1.45;overflow-wrap:anywhere}
+.mim-more summary{cursor:pointer;font-size:13px;font-weight:700;color:#111;padding:6px 0;list-style:none;display:inline-flex;align-items:center;gap:6px}
+.mim-more summary::-webkit-details-marker{display:none}
+.mim-more summary:before{content:'+';display:inline-grid;place-items:center;width:18px;height:18px;border:1.5px solid #111;border-radius:6px;font-size:13px;line-height:1}
+.mim-more[open] summary:before{content:'−'}
+.mim-more[open]>*:not(summary){margin-top:8px}
+.mim-msg{font-size:13px;color:var(--ed-mid);min-height:4px}
+.mim-msg:empty{display:none}
+.mim-dlg-foot{display:flex;justify-content:flex-end;align-items:center;gap:6px;padding:12px 16px 16px}
+.mim-i-prev{width:100%;max-height:240px;object-fit:contain;background:var(--ed-soft);border-radius:12px}
+.mim-choose{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border:1.5px solid #111;border-radius:12px;font:700 14px Arial,sans-serif;cursor:pointer;transition:background .15s}
+.mim-choose:hover{background:var(--ed-soft)}
+.mim-choose:focus-within{outline:2px solid #111;outline-offset:2px}
+.mim-c-list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
+.mim-c-list li{background:var(--ed-soft);border-radius:10px;padding:10px 12px;overflow-wrap:anywhere}
+
+/* admin: edit tab */
+.adm-edit-card p{font-size:14px;margin-bottom:14px;max-width:620px}
+.adm-open-editor{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 24px;border-radius:12px;font-size:14px}
+.adm-edit-mode{margin-top:12px;font-size:13px}
+.adm-history{list-style:none;margin:0;padding:0}
+.adm-history li{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.adm-history li div{flex:1;display:flex;flex-direction:column;min-width:0}
+.adm-history strong{font-size:14px;overflow-wrap:anywhere}
+.adm-history small{font-size:12px;color:var(--muted)}
+.adm-history .adm-btn-ghost{min-height:38px;font-size:11px}
+
+@media(max-width:600px){
+body.mim-editing{padding-bottom:180px}
+.mim-edit-bar{bottom:10px;border-radius:20px;padding:8px 8px 6px}
+.mim-run{flex-wrap:wrap}
+.mim-run-field{order:-1;flex:1 1 100%}
+.mim-run-go{margin-left:auto}
+.mim-chip{max-width:min(60vw,240px)}
+.mim-eb-foot{flex-wrap:wrap;gap:4px}
+.mim-run-msg{flex-basis:100%}
+.mim-eb-actions{margin-left:auto}
+.mim-dlg{border-radius:20px 20px 0 0;width:100vw;max-width:100vw;margin:auto 0 0;max-height:85dvh}
+.mim-dlg[open]{animation:mim-up .24s ease both}
+@keyframes mim-up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+}
+@media(prefers-reduced-motion:reduce){.mim-edit-bar,.mim-dlg[open],.mim-dlg::backdrop{animation:none}}
+.adm-card>p.adm-muted{font-size:13px;margin-bottom:8px}
+.mim-chip-dot{width:7px;height:7px;border-radius:50%;background:#fff;flex:none;margin-right:2px}
+
+
+.mim-page select{font:700 13px Arial,sans-serif;color:#111;background:#f4f4f4;border:0;border-radius:10px;min-height:38px;padding:0 30px 0 12px;cursor:pointer;max-width:220px}
+.mim-page select:focus-visible{outline:2px solid #111;outline-offset:2px}
+@media(max-width:600px){.mim-page select{max-width:170px}}
+.mim-hl{z-index:60}.mim-edit-bar{z-index:62}
+
+/* helpers used by the admin popups */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+body.locked{overflow:hidden}
+.close-dialog{display:inline-grid;place-items:center;background:none;color:var(--ink);border:1px solid var(--line);width:44px;height:44px;font-size:25px;line-height:1;border-radius:3px;cursor:pointer;flex-shrink:0}
+@keyframes drawer-in{from{transform:translateX(30px);opacity:.6}to{transform:none;opacity:1}}
+.admin-login .btn{justify-content:space-between;border:0;font-family:Arial,Helvetica,sans-serif}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.dark:disabled{opacity:.6;cursor:wait;transform:none}
+.adm-login-wake{font-size:13px;color:var(--muted);margin:-4px 0 10px;min-height:0}
+.adm-login-wake:empty{display:none}
+.admin-login h2,.adm-card h3{color:var(--ink)}
+.admin-dialog button,.admin-login button,.mim-ui button{font-family:Arial,Helvetica,sans-serif}
+.adm-tabs button{cursor:pointer}
+.adm-btn,.adm-btn-ghost{cursor:pointer}
+.adm-btn:disabled,.adm-btn-ghost:disabled{opacity:.55;cursor:wait}
+footer .f-admin{color:#c3c9cd}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to Main Content</a>
@@ -664,6 +920,7 @@ All registration fees are non-refundable. Transfers may be permitted by the even
           <li><a href="#lessons">Skating lessons</a></li>
           <li><a href="#skater-migration">Skater Migration</a></li>
           <li><a href="#our-team">Meet the team</a></li>
+          <li><a href="#admin" data-admin>Admin sign in</a></li>
         </ul>
       </div>
       <div>
@@ -679,6 +936,616 @@ All registration fees are non-refundable. Transfers may be permitted by the even
     <div class="f-bottom"><span>© SobeRollers 2026</span><span>Designed by <a href="https://websitecreador.com/">Website Creador</a></span></div>
   </div>
 </footer>
+<dialog id="admin-login" class="admin-login" aria-labelledby="admin-login-title"><form id="admin-login-form" novalidate><div class="adm-login-top"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><button type="button" class="close-dialog" data-close aria-label="Close admin sign in">×</button></div><h2 id="admin-login-title">Admin sign in</h2><p class="adm-login-help">For site owners only.</p><label class="adm-login-label" for="admin-pass">Password</label><input id="admin-pass" type="password" autocomplete="current-password" required><label class="adm-login-show"><input type="checkbox" id="admin-show-pass"> Show password</label><p class="adm-login-err" id="admin-login-err" role="alert"></p><p class="adm-login-wake" id="admin-login-wake" role="status"></p><button type="submit" class="btn dark" id="admin-login-btn">Sign in<span class="arrow" aria-hidden="true">→</span></button></form></dialog>
+<dialog id="admin-dialog" class="admin-dialog" aria-label="Admin dashboard"><div class="adm-shell"><header class="adm-top"><div class="adm-brand"><img src="logo_light.png" alt="SoBe Rollers" width="1400" height="615"><div><span class="adm-kicker">Admin</span><strong>Website</strong></div></div><button type="button" class="adm-btn-ghost" id="admin-signout" data-close>Sign out</button></header><nav class="adm-tabs" role="tablist" aria-label="Admin sections"><button type="button" role="tab" data-tab="edit" aria-selected="true">Edit website</button></nav><main class="adm-main">
+<section data-panel="edit" role="tabpanel" aria-label="Edit website"><div class="adm-card adm-edit-card"><h3>Edit website</h3><p>Opens your website with an editing box at the bottom. Type what you want changed, or tap the arrow and click the thing you want to change. Nothing goes live until you commit.</p><button type="button" class="adm-btn adm-open-editor" id="adm-start-edit">Open website editor<span aria-hidden="true">→</span></button><p class="adm-muted adm-edit-mode" id="adm-edit-mode"></p></div><div class="adm-card"><h3>Change history</h3><p class="adm-muted">Every commit is saved. Restore any version with one click.</p><ul class="adm-history" id="adm-history"></ul><p class="adm-muted" id="adm-history-msg" role="status"></p></div></section>
+</main></div></dialog>
+<div id="mim-edit-bar" class="mim-edit-bar mim-ui" hidden role="region" aria-label="Website editor"><form class="mim-run" id="mim-run-form"><button type="button" class="mim-icon-btn" id="mim-point" aria-pressed="false" aria-label="Point at something to change" title="Point at something to change"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 3l13 7.5-5.8 1.6L9.6 18z"/><path d="M12.4 12.3l5.1 5.1"/></svg></button><div class="mim-run-field"><span class="mim-chip" id="mim-chip" hidden><span class="mim-chip-dot" aria-hidden="true"></span><span id="mim-chip-text">Selected</span><button type="button" id="mim-chip-wider" title="Select a bigger area">Wider</button><button type="button" id="mim-chip-clear" aria-label="Clear selection">×</button></span><label class="visually-hidden" for="mim-run-input">Describe a change</label><input id="mim-run-input" type="text" autocomplete="off" placeholder="Describe a change…"></div><label class="mim-icon-btn mim-attach" title="Attach a picture"><input type="file" id="mim-run-file" class="mim-run-file" accept="image/jpeg,image/png,image/webp,image/gif"><span class="visually-hidden">Attach a picture</span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></label><button type="submit" class="mim-run-go" id="mim-run-go">Run</button></form><div class="mim-eb-foot"><label class="mim-page"><span class="visually-hidden">Page to edit</span><select id="mim-page"></select></label><p class="mim-run-msg" id="mim-run-msg" role="status"></p><div class="mim-eb-actions"><span class="mim-pending" id="mim-pending"></span><button type="button" class="mim-text-btn" id="mim-undo" hidden>Undo</button><button type="button" class="mim-text-btn" id="mim-exit">Exit</button><button type="button" class="mim-publish" id="mim-commit" hidden>Commit changes</button></div></div></div><div class="mim-hl mim-ui" id="mim-hl" hidden aria-hidden="true"></div><div class="mim-hl mim-sel mim-ui" id="mim-sel" hidden aria-hidden="true"></div>
+<dialog id="mim-text-dlg" class="mim-dlg mim-ui" aria-labelledby="mim-t-title"><div class="mim-dlg-body"><div class="mim-dlg-top"><h2 id="mim-t-title">Edit text</h2><button type="button" class="mim-x" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><label class="visually-hidden" for="mim-t-en">Text</label><textarea id="mim-t-en" rows="3"></textarea><p class="mim-was">Was: <span id="mim-t-orig"></span></p><p class="mim-msg" id="mim-t-msg" role="alert"></p></div><div class="mim-dlg-foot"><button type="button" class="mim-text-btn" data-close>Cancel</button><button type="button" class="mim-publish" id="mim-t-save">Save</button></div></dialog>
+<dialog id="mim-img-dlg" class="mim-dlg mim-ui" aria-labelledby="mim-i-title"><div class="mim-dlg-body"><div class="mim-dlg-top"><h2 id="mim-i-title">Change picture</h2><button type="button" class="mim-x" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><img id="mim-i-prev" class="mim-i-prev" alt="Picture preview"><label class="mim-choose"><input id="mim-i-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg><span>Choose a new picture</span></label><details class="mim-more"><summary>Description</summary><label class="visually-hidden" for="mim-i-alt">Picture description</label><input id="mim-i-alt" type="text"></details><p class="mim-msg" id="mim-i-msg" role="status"></p></div><div class="mim-dlg-foot"><button type="button" class="mim-text-btn" data-close>Cancel</button><button type="button" class="mim-publish" id="mim-i-save">Save</button></div></dialog>
+<dialog id="mim-commit-dlg" class="mim-dlg mim-ui" aria-labelledby="mim-c-title"><div class="mim-dlg-body"><div class="mim-dlg-top"><h2 id="mim-c-title">Commit changes</h2><button type="button" class="mim-x" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><ul class="mim-c-list" id="mim-c-list"></ul><p class="mim-was" id="mim-c-where"></p><details class="mim-more"><summary>Add a note</summary><label class="visually-hidden" for="mim-c-note">Note</label><input id="mim-c-note" type="text" maxlength="120" placeholder="e.g. Updated lesson times"></details><p class="mim-msg" id="mim-c-msg" role="status"></p></div><div class="mim-dlg-foot"><button type="button" class="mim-text-btn" data-close>Keep editing</button><button type="button" class="mim-publish" id="mim-c-go">Commit &amp; publish</button></div></dialog>
+<script type="application/json" id="mim-content">{"v":1,"text":{},"img":{},"history":[]}</script>
+<script id="mim-content-js">
+/* ==========================================================
+   SoBe Rollers — editable content loader
+   Reads the saved edits (the <script id="mim-content"> block),
+   applies them to the page, and lists every editable text and
+   picture for the admin editor. Runs before the page router.
+   ========================================================== */
+(function () {
+  'use strict';
+  let state = { v: 1, text: {}, img: {}, history: [] };
+  try { const raw = document.getElementById('mim-content'); if (raw) state = Object.assign(state, JSON.parse(raw.textContent || '{}')); } catch (e) { /* bad JSON: keep the original site */ }
+
+  const SKIP = 'script,style,noscript,#admin-login,#admin-dialog,.mim-ui,[aria-hidden="true"],.cart-count';
+  const nodes = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(n) {
+      if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      return n.parentElement.closest(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  const texts = nodes.map((n, i) => ({ key: 't' + i, node: n, orig: n.nodeValue.trim() }));
+  const imgs = [...document.querySelectorAll('img')].filter(im => !im.closest('#admin-login,#admin-dialog,.mim-ui'));
+  imgs.forEach(im => { im.dataset.origUrl = im.getAttribute('src'); im.dataset.origSrc = im.getAttribute('data-asset') || im.getAttribute('src'); im.dataset.origAlt = im.getAttribute('alt') || ''; });
+
+  const setText = (item, val) => { const v = item.node.nodeValue; const lead = v.match(/^\s*/)[0], tail = v.match(/\s*$/)[0]; item.node.nodeValue = lead + val + tail; };
+  for (const it of texts) {
+    const o = state.text[it.key];
+    if (o && o.orig === it.orig && typeof o.en === 'string') setText(it, o.en);
+  }
+  for (const im of imgs) {
+    const o = state.img[im.dataset.origSrc];
+    if (o) { if (o.src) im.src = o.src; if (o.alt != null) im.alt = o.alt; im.removeAttribute('srcset'); }
+  }
+
+  window.MIM_CONTENT = { state, texts, imgs, setText };
+})();
+</script>
+<script id="mim-admin-js">
+/* ==========================================================
+   SoBe Rollers — admin sign-in + dashboard
+   The password is checked by YOUR SERVER (ADMIN_CONFIG.apiUrl),
+   never in this file.
+     POST {apiUrl}/login  {password} -> {token}
+   ========================================================== */
+window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onrender.com/api' };
+
+(function () {
+  'use strict';
+  const CFG = window.ADMIN_CONFIG;
+  const $ = s => document.querySelector(s);
+  const login = $('#admin-login'), dash = $('#admin-dialog');
+  if (!login || !dash) return;
+
+  /* popups: close buttons, click outside, unlock scrolling */
+  for (const dlg of document.querySelectorAll('#admin-login,#admin-dialog,.mim-dlg')) {
+    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+    dlg.addEventListener('close', () => { if (!document.querySelector('dialog[open]')) document.body.classList.remove('locked'); });
+    dlg.addEventListener('click', e => {
+      if (e.target !== dlg || dlg === dash) return;
+      const r = dlg.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
+    });
+  }
+
+  /* ---------- sign in ---------- */
+  function openLogin(e) { if (e) e.preventDefault(); $('#admin-pass').value = ''; $('#admin-login-err').textContent = ''; $('#admin-login-wake').textContent = ''; login.showModal(); document.body.classList.add('locked'); $('#admin-pass').focus(); }
+  for (const a of document.querySelectorAll('[data-admin]')) a.addEventListener('click', openLogin);
+  if (location.hash === '#admin') { history.replaceState(null, '', location.pathname); openLogin(); }
+  $('#admin-show-pass').addEventListener('change', e => { $('#admin-pass').type = e.target.checked ? 'text' : 'password'; });
+
+  $('#admin-login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = $('#admin-pass').value, err = $('#admin-login-err'), wake = $('#admin-login-wake'), btn = $('#admin-login-btn');
+    err.textContent = '';
+    if (!pw) { err.textContent = 'Enter the admin password.'; return; }
+    btn.disabled = true;
+    // The free server sleeps when nobody uses it; the first sign-in can take up to a minute.
+    const slow = setTimeout(() => { wake.textContent = 'Waking up the server… this can take up to a minute the first time.'; }, 4000);
+    try {
+      const ctl = new AbortController(); const stop = setTimeout(() => ctl.abort(), 120000);
+      const r = await fetch(CFG.apiUrl.replace(/\/$/, '') + '/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }), signal: ctl.signal });
+      clearTimeout(stop);
+      if (r.status === 401 || r.status === 403) throw new Error('bad');
+      if (r.status === 429) throw new Error('slow');
+      if (!r.ok) throw new Error('server');
+      const j = await r.json();
+      window.MIM_ADMIN = { token: j.token };
+      try { sessionStorage.setItem('sbr-admin', JSON.stringify({ token: j.token, at: Date.now() })); } catch {}
+      login.close(); openDash();
+    } catch (x) {
+      err.textContent = x.message === 'bad' ? 'That password isn’t right. Try again.'
+        : x.message === 'slow' ? 'Too many tries. Wait a few minutes and try again.'
+        : 'Couldn’t reach the server. Try again in a moment.';
+      $('#admin-pass').select();
+    } finally { clearTimeout(slow); wake.textContent = ''; btn.disabled = false; }
+  });
+
+  // Stay signed in for this browser tab (after the page reloads from a commit)
+  try {
+    const s = JSON.parse(sessionStorage.getItem('sbr-admin') || 'null');
+    if (s && s.token && Date.now() - s.at < 11 * 3600 * 1000) window.MIM_ADMIN = { token: s.token };
+  } catch {}
+
+  /* ---------- dashboard ---------- */
+  function openDash(tab) {
+    showTab(tab || 'edit');
+    if (window.MIM_EDITOR) window.MIM_EDITOR.renderHistory();
+    dash.showModal(); document.body.classList.add('locked');
+  }
+  $('#admin-signout').addEventListener('click', () => { window.MIM_ADMIN = null; try { sessionStorage.removeItem('sbr-admin'); } catch {} dash.close(); });
+  $('#adm-start-edit').addEventListener('click', () => { if (!window.MIM_EDITOR) return; dash.close(); window.MIM_EDITOR.start(); });
+
+  const tabs = [...dash.querySelectorAll('[data-tab]')];
+  function showTab(id) {
+    tabs.forEach(t => { const on = t.dataset.tab === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; });
+    for (const p of dash.querySelectorAll('[data-panel]')) p.hidden = p.dataset.panel !== id;
+    dash.querySelector('.adm-main').scrollTop = 0;
+  }
+  tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+  // After a commit the page reloads; reopen the dashboard or editor for the signed-in admin
+  try {
+    const after = sessionStorage.getItem('sbr-after');
+    if (after && window.MIM_ADMIN) {
+      sessionStorage.removeItem('sbr-after');
+      window.addEventListener('load', () => { if (after === 'editor' && window.MIM_EDITOR) window.MIM_EDITOR.start(); else openDash('edit'); });
+    }
+  } catch {}
+
+  window.SBR_ADMIN_UI = { openDash, openLogin };
+})();
+</script>
+<script id="mim-editor-js">
+/* ==========================================================
+   SoBe Rollers — admin website editor (same as Miami Inline Marathon)
+   Click-to-edit text and pictures, "Describe a change" + Run (AI),
+   preview, Commit changes (publishes), and change history.
+   Commits go to your server:
+     POST {apiUrl}/content {token, content}  -> saves + republishes the site
+     POST {apiUrl}/upload  {token, dataUrl}  -> {url}
+     POST {apiUrl}/ai      {token, prompt, tier} -> {text}
+   ========================================================== */
+(function () {
+  'use strict';
+  const C = window.MIM_CONTENT; if (!C) return;
+  const $ = s => document.querySelector(s);
+  const bar = $('#mim-edit-bar'); if (!bar) return;
+  const tDlg = $('#mim-text-dlg'), iDlg = $('#mim-img-dlg'), cDlg = $('#mim-commit-dlg');
+  const byKey = Object.fromEntries(C.texts.map(t => [t.key, t]));
+  const cfg = () => window.ADMIN_CONFIG || {};
+  const admin = () => window.MIM_ADMIN || {};
+  const api = () => (cfg().apiUrl || '').replace(/\/$/, '');
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const short = (s, n = 60) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+
+  let editing = false, pending = {}, stack = [], curText = null, curImg = null, newImgSrc = null, exitArmed = false;
+
+  /* ---------- current values ---------- */
+  function currentText(it) {
+    if (pending[it.key]) return { en: pending[it.key].en };
+    const o = C.state.text[it.key];
+    if (o && o.orig === it.orig) return { en: o.en };
+    return { en: it.orig };
+  }
+  function currentImg(src) {
+    const p = pending['img:' + src]; if (p) return p;
+    const o = C.state.img[src]; const im = C.imgs.find(i => i.dataset.origSrc === src);
+    return { src: (o && o.src) || (im ? im.dataset.origUrl : src), alt: (o && o.alt != null) ? o.alt : (im ? im.dataset.origAlt : '') };
+  }
+
+  /* ---------- pages (the site's sections) ---------- */
+  const NAMES = { home: 'Main page', events: 'Events', lessons: 'Lessons', shop: 'Shop', 'skater-migration': 'Skater Migration', 'our-team': 'Our Team', media: 'Media', faq: 'FAQ', contact: 'Contact', 'plans-pricing': 'Plans & Pricing', groups: 'Groups', cart: 'Cart' };
+  const routes = [...document.querySelectorAll('.route[data-route]')];
+  const pageSel = $('#mim-page');
+  (function buildPages() {
+    const main = routes.filter(r => !r.dataset.route.startsWith('event-'));
+    const ev = routes.filter(r => r.dataset.route.startsWith('event-'));
+    const opt = r => { const h = r.querySelector('h1,h2'); const o = el('option', null, NAMES[r.dataset.route] || (h ? h.textContent.trim() : r.dataset.route)); o.value = r.dataset.route; return o; };
+    main.forEach(r => pageSel.append(opt(r)));
+    if (ev.length) { const g = document.createElement('optgroup'); g.label = 'Event pages'; ev.forEach(r => g.append(opt(r))); pageSel.append(g); }
+  })();
+  const currentRoute = () => { const id = (location.hash || '#home').slice(1); return routes.some(r => r.dataset.route === id) ? id : 'home'; };
+  const visible = n => { const r = n.parentElement && n.parentElement.closest('.route'); return !r || !r.hidden; };
+  pageSel.addEventListener('change', () => {
+    select(null); setPointing(false);
+    location.hash = '#' + pageSel.value;
+    $('#mim-run-msg').textContent = 'Click any text on this page to change it.';
+  });
+  window.addEventListener('hashchange', () => { if (editing) { pageSel.value = currentRoute(); select(null); } });
+
+  /* ---------- start / stop ---------- */
+  function start() {
+    if (!admin().token) { window.SBR_ADMIN_UI && window.SBR_ADMIN_UI.openLogin(); return; }
+    editing = true; pending = {}; stack = []; exitArmed = false;
+    document.body.classList.add('mim-editing');
+    C.texts.forEach(t => t.node.parentElement && t.node.parentElement.classList.add('mim-ed'));
+    select(null); setPointing(false); pageSel.value = currentRoute();
+    C.imgs.forEach(i => i.classList.add('mim-ed-img'));
+    bar.hidden = false; updateBar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function stop() { location.reload(); }
+
+  function updateBar() {
+    const n = Object.keys(pending).length;
+    $('#mim-pending').textContent = n ? n + (n === 1 ? ' change' : ' changes') : '';
+    $('#mim-undo').hidden = !stack.length;
+    $('#mim-commit').hidden = !n;
+    $('#mim-exit').textContent = exitArmed ? 'Discard changes?' : 'Exit';
+  }
+
+  /* ---------- clicking in edit mode ---------- */
+  function textNodeAt(x, y) {
+    let node = null;
+    if (document.caretRangeFromPoint) { const r = document.caretRangeFromPoint(x, y); node = r && r.startContainer; }
+    else if (document.caretPositionFromPoint) { const p = document.caretPositionFromPoint(x, y); node = p && p.offsetNode; }
+    return node && node.nodeType === 3 ? node : null;
+  }
+  /* ---------- arrow: point at one thing ---------- */
+  let pointing = false, selected = null;
+  const hl = $('#mim-hl'), sel = $('#mim-sel');
+  function targetOf(t, x, y) {
+    if (!t || t.nodeType !== 1 || t.closest('.mim-ui')) return null;
+    const img = t.closest('img'); if (img) return img;
+    if (x != null) {
+      const n = textNodeAt(x, y);
+      if (n && n.parentElement && t.contains(n) && n.nodeValue.trim()) {
+        const r = document.createRange(); r.selectNodeContents(n); const b = r.getBoundingClientRect();
+        if (x >= b.left - 2 && x <= b.right + 2 && y >= b.top - 2 && y <= b.bottom + 2) return n.parentElement;
+      }
+    }
+    return t === document.body || t === document.documentElement ? null : t;
+  }
+  function place(box, t) {
+    if (!t) { box.hidden = true; return; }
+    const r = t.getBoundingClientRect(); box.hidden = false;
+    Object.assign(box.style, { top: r.top - 6 + 'px', left: r.left - 6 + 'px', width: r.width + 12 + 'px', height: r.height + 12 + 'px' });
+  }
+  function setPointing(on) {
+    pointing = on; document.body.classList.toggle('mim-pointing', on);
+    $('#mim-point').setAttribute('aria-pressed', on);
+    if (!on) hl.hidden = true;
+    $('#mim-run-msg').textContent = on ? 'Click the thing you want to change.' : '';
+  }
+  function select(t) {
+    selected = t; place(sel, t);
+    $('#mim-chip').hidden = !t;
+    if (t) { $('#mim-chip-text').textContent = t.tagName === 'IMG' ? 'Picture selected' : 'Selected'; $('#mim-run-input').placeholder = 'What should it say instead?'; $('#mim-run-msg').textContent = ''; $('#mim-run-input').focus(); }
+    else $('#mim-run-input').placeholder = 'Describe a change…';
+  }
+  $('#mim-point').addEventListener('click', () => setPointing(!pointing));
+  $('#mim-chip-clear').addEventListener('click', () => { select(null); $('#mim-run-msg').textContent = ''; });
+  $('#mim-chip-wider').addEventListener('click', () => { const p = selected && selected.parentElement; if (p && p !== document.body && !p.closest('.mim-ui')) select(p); });
+  document.addEventListener('mousemove', e => { if (editing && pointing) place(hl, targetOf(e.target, e.clientX, e.clientY)); });
+  window.addEventListener('scroll', () => { if (selected) place(sel, selected); hl.hidden = true; }, { passive: true });
+  window.addEventListener('resize', () => { if (selected) place(sel, selected); });
+
+  document.addEventListener('click', e => {
+    if (!editing || e.target.closest('.mim-ui')) return;
+    e.preventDefault(); e.stopPropagation();
+    if (pointing) { const t = targetOf(e.target, e.clientX, e.clientY); if (t) { select(t); setPointing(false); } return; }
+    const img = e.target.closest('img.mim-ed-img');
+    if (img) return openImg(img.dataset.origSrc);
+    const n = textNodeAt(e.clientX, e.clientY);
+    let it = n && C.texts.find(t => t.node === n);
+    if (!it) { const host = e.target.closest('.mim-ed'); it = host && C.texts.find(t => host.contains(t.node)); }
+    if (it) openText(it);
+  }, true);
+  document.addEventListener('submit', e => { if (editing && !e.target.closest('.mim-ui')) e.preventDefault(); }, true);
+
+  /* ---------- text editing ---------- */
+  function openText(it) {
+    curText = it; const v = currentText(it);
+    $('#mim-t-orig').textContent = it.orig;
+    $('#mim-t-orig').parentElement.hidden = v.en === it.orig;
+    $('#mim-t-en').value = v.en;
+    $('#mim-t-msg').textContent = '';
+    tDlg.showModal(); $('#mim-t-en').focus();
+  }
+  $('#mim-t-save').addEventListener('click', () => {
+    const en = $('#mim-t-en').value.replace(/[ \t]+/g, ' ').trim();
+    if (!en) { $('#mim-t-msg').textContent = 'Text can’t be empty.'; return; }
+    if (en !== currentText(curText).en) applyText(curText.key, en, 'g' + Date.now());
+    tDlg.close();
+  });
+  async function askAI(prompt, tier) {
+    const r = await fetch(api() + '/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: admin().token, prompt, tier }) });
+    if (r.status === 503) throw new Error('nokey');
+    if (r.status === 401) throw new Error('signedout');
+    if (!r.ok) throw new Error('server');
+    return { text: (await r.json()).text || '' };
+  }
+  function applyText(key, en, group) {
+    const it = byKey[key]; if (!it) return;
+    stack.push({ key, group, prev: pending[key] || null });
+    pending[key] = { type: 'text', en };
+    C.setText(it, en); it.node.parentElement.classList.add('mim-changed');
+    exitArmed = false; updateBar();
+  }
+
+  /* ---------- picture editing ---------- */
+  function openImg(src) {
+    curImg = src; newImgSrc = null; const v = currentImg(src);
+    $('#mim-i-prev').src = v.src; $('#mim-i-alt').value = v.alt; $('#mim-i-file').value = ''; $('#mim-i-msg').textContent = '';
+    iDlg.showModal();
+  }
+  $('#mim-i-file').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    const msg = $('#mim-i-msg');
+    if (!/^image\/(png|jpe?g|webp|gif)$/.test(f.type)) { msg.textContent = 'Use a JPG, PNG, WebP or GIF picture.'; return; }
+    if (f.size > 15e6) { msg.textContent = 'That picture is over 15 MB. Pick a smaller one.'; return; }
+    msg.textContent = 'Preparing picture…';
+    try { newImgSrc = await shrink(f); $('#mim-i-prev').src = newImgSrc; msg.textContent = 'Looks good? Press Save.'; }
+    catch { msg.textContent = 'Couldn’t read that picture. Try another file.'; }
+  });
+  function shrink(file) {
+    return new Promise((res, rej) => {
+      const img = new Image(); const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const max = 1800, s = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        c.toBlob(b => { if (!b) return rej(); const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); }, 'image/webp', 0.82);
+      };
+      img.onerror = rej; img.src = url;
+    });
+  }
+  $('#mim-i-save').addEventListener('click', () => {
+    const prev = currentImg(curImg);
+    const next = { type: 'img', src: newImgSrc || prev.src, alt: $('#mim-i-alt').value.trim() };
+    if (next.src === prev.src && next.alt === prev.alt) { iDlg.close(); return; }
+    applyImg(curImg, next, 'g' + Date.now()); iDlg.close();
+  });
+  function applyImg(src, next, group) {
+    const key = 'img:' + src;
+    stack.push({ key, group, prev: pending[key] || null });
+    pending[key] = next;
+    C.imgs.filter(i => i.dataset.origSrc === src).forEach(i => { i.src = next.src; i.alt = next.alt; i.removeAttribute('srcset'); i.classList.add('mim-changed'); });
+    exitArmed = false; updateBar();
+  }
+
+  /* ---------- undo / exit ---------- */
+  $('#mim-undo').addEventListener('click', () => {
+    if (!stack.length) return;
+    const g = stack[stack.length - 1].group;
+    while (stack.length && stack[stack.length - 1].group === g) undoOne(stack.pop());
+    $('#mim-run-msg').textContent = 'Undone.';
+    updateBar();
+  });
+  function undoOne(last) {
+    if (last.prev) pending[last.key] = last.prev; else delete pending[last.key];
+    if (last.key.startsWith('img:')) {
+      const src = last.key.slice(4), v = currentImg(src);
+      C.imgs.filter(i => i.dataset.origSrc === src).forEach(i => { i.src = v.src; i.alt = v.alt; if (!pending[last.key]) i.classList.remove('mim-changed'); });
+    } else {
+      const it = byKey[last.key]; C.setText(it, currentText(it).en);
+      if (!pending[last.key]) it.node.parentElement.classList.remove('mim-changed');
+    }
+  }
+  $('#mim-exit').addEventListener('click', () => {
+    if (Object.keys(pending).length && !exitArmed) { exitArmed = true; updateBar(); return; }
+    stop();
+  });
+
+  /* ---------- "Describe a change" + Run ---------- */
+  let attached = null; const convo = [];
+  async function attach(file, msgEl) {
+    attached = null;
+    if (!file) return;
+    if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) { msgEl.textContent = 'Use a JPG, PNG, WebP or GIF picture.'; return; }
+    if (file.size > 15e6) { msgEl.textContent = 'That picture is over 15 MB. Pick a smaller one.'; return; }
+    try { attached = { src: await shrink(file), name: file.name }; msgEl.textContent = 'Picture attached: ' + file.name; }
+    catch { msgEl.textContent = 'Couldn’t read that picture. Try another file.'; }
+  }
+
+  function literal(req) {
+    const q = req.replace(/^\s*(please|can you|could you|pls)\s+/i, '').trim();
+    const m = q.match(/^(?:change|replace|switch|swap|update|rename|make)\s+(?:all\s+|every\s+|each\s+)?(?:(?:the\s+)?(?:word|text|name|number|price)s?\s+)?["“'‘]?(.+?)["”'’]?\s+(?:to|with|into|for|say|=)\s+["“'‘]?(.+?)["”'’]?\s*(?:everywhere|on the (?:whole |entire )?(?:page|site|website))?\s*[.!]*$/i);
+    if (!m) return null;
+    const from = m[1].trim(), to = m[2].trim();
+    if (/^(it|this|that|these|those|them|they|the)$/i.test(from)) return null;
+    if (!from || !to || from.length > 120 || from.toLowerCase() === to.toLowerCase()) return null;
+    return { from, to };
+  }
+  function matchCase(found, to) {
+    if (found === found.toUpperCase() && found !== found.toLowerCase()) return to.toUpperCase();
+    if (found[0] === found[0].toUpperCase() && found.slice(1) === found.slice(1).toLowerCase() && to === to.toLowerCase()) return to[0].toUpperCase() + to.slice(1);
+    return to;
+  }
+  function replaceAll(from, to, inScope) {
+    const esc = from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp((/^\w/.test(from) ? '\\b' : '') + esc + (/\w$/.test(from) ? '\\b' : ''), 'gi');
+    const group = 'lit' + Date.now(); let n = 0, first = null;
+    for (const it of C.texts) {
+      if (!inScope(it.node)) continue;
+      const v = currentText(it);
+      re.lastIndex = 0; if (!re.test(v.en)) continue; re.lastIndex = 0;
+      const en = v.en.replace(re, f => matchCase(f, to));
+      if (en === v.en) continue;
+      applyText(it.key, en, group); n++; if (!first && visible(it.node)) first = it.node.parentElement;
+    }
+    if (first && !selected) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return n;
+  }
+
+  // Show only what was done: drop questions and suggestions
+  function plainNote(note) {
+    const s = String(note || '').match(/[^.!?]+[.!?]*/g) || [];
+    return s.map(x => x.trim()).filter(x => x && !x.endsWith('?') && !/\b(you (may|might|could|should|can|want|'ll want)|consider|recommend|suggest|would you|do you|want me to|let me know|double-check|make sure|note that|keep in mind|however|also update|you'll need)\b/i.test(x)).join(' ');
+  }
+
+  async function run(req, msgEl) {
+    req = (req || '').trim();
+    if (!req) { msgEl.textContent = 'Type what you want changed first.'; return false; }
+    const scope = selected;
+    // The AI works on the page that's open (plus the menu and footer); "change X to Y" also works across every page
+    const inScope = n => scope ? scope.contains(n) : visible(n);
+    const items = C.texts.filter(t => inScope(t.node)).map(t => ({ key: t.key, text: currentText(t).en }));
+    const pics = [...new Set(C.imgs.filter(i => scope ? (i === scope || scope.contains(i)) : !(i.closest('.route') || {}).hidden).map(i => i.dataset.origSrc))].map(src => ({ key: src, description: currentImg(src).alt }));
+    const fallback = () => {
+      const lit = literal(req); if (!lit || attached) return false;
+      const n = replaceAll(lit.from, lit.to, scope ? inScope : () => true); if (!n) return false;
+      convo.push({ req, note: 'Replaced "' + lit.from + '" with "' + lit.to + '" in ' + n + (n === 1 ? ' place.' : ' places.') });
+      msgEl.textContent = 'Changed “' + lit.from + '” to “' + lit.to + '” in ' + n + (n === 1 ? ' place.' : ' places.');
+      if (scope) place(sel, scope);
+      return true;
+    };
+    msgEl.textContent = 'Working on it…';
+    let result;
+    try {
+      const past = convo.slice(-4).map(c => '- Owner: "' + c.req + '" → You: "' + c.note + '"').join('\n');
+      const prompt = 'You edit the SoBe Rollers website (SobeRollers, an inline skating club in Miami Beach: group skates, lessons, events, a skate shop) for its owner. '
+        + 'The owner sees every change on the page before anything is published, and can undo it in one click, so act on what they ask instead of asking them to clarify.\n'
+        + (past ? 'Earlier in this editing session:\n' + past + '\nThe new message may answer or follow up on that.\n' : '')
+        + 'The owner now typed: "' + req + '"\n'
+        + (scope ? 'The owner pointed at one part of the page. Only the items listed below are in that part: change only these, and treat "this"/"it" as that part.\n' : 'The items below are the page the owner has open, plus the site menu and footer.\n')
+        + (attached ? 'The owner attached a new picture to use.\n' : 'No picture is attached.\n')
+        + '\nReturn ONLY JSON: {"changes":[{"key":"t12","text":"new text"}],"picture":{"key":"<picture key>","description":"short description of the new picture"} or null,"note":"one short plain sentence stating only what you changed, e.g. Changed the lesson time to 10 AM."}.\n'
+        + 'The note must NEVER ask a question, offer options, recommend or suggest other changes, or warn about anything. Just state what was done. If nothing was changed, say only what could not be done in one short sentence.\n'
+        + 'How to act:\n'
+        + '- Do what they literally asked. "Change X to Y" means replace X with Y in every text item where X appears (keeping capitalization style, e.g. MIAMI→ORLANDO, Miami→Orlando).\n'
+        + '- When a fact appears in several places (a price, date, time, name, place), update every place so the page stays consistent.\n'
+        + '- Keep tone, capitalization style and length similar.\n'
+        + '- Make exactly the change asked, even if you think it could confuse visitors.\n'
+        + '- Only return no changes when nothing on the page matches, or when they ask for something you cannot do: layout, colors, links, code, or a picture without an attachment (then tell them to attach one with the picture button).\n'
+        + '- Set "picture" only if a picture is attached and the request says which one to replace (pick its key from PICTURES; if only one picture is listed, use it).\n\n'
+        + 'TEXT ITEMS:\n' + JSON.stringify(items) + '\n\nPICTURES:\n' + JSON.stringify(pics);
+      const ask = async p => {
+        const r = await askAI(p, 'default');
+        const m = String(r.text || '').replace(/```(json)?/g, '').match(/\{[\s\S]*\}/); if (!m) throw new Error('parse');
+        return JSON.parse(m[0]);
+      };
+      result = await ask(prompt);
+      const empty = !(result.changes || []).some(c => byKey[c.key] && c.text && c.text.trim() && c.text.trim() !== currentText(byKey[c.key]).en) && !(result.picture && attached);
+      if (empty) {
+        msgEl.textContent = 'Working on it… (second try)';
+        result = await ask(prompt + '\n\nIMPORTANT: Your first answer made no changes, but the owner wants this done. Find the text items this request is about and change them now. '
+          + 'Only return no changes if the request is about layout, colors, links, code, or a picture with no attachment. Your first answer\'s note was: "' + String(result.note || '') + '"');
+      }
+    } catch (x) {
+      if (fallback()) return true;
+      msgEl.textContent = x.message === 'nokey' ? 'The AI isn’t set up yet: add your Anthropic API key in the server settings. You can still click any text to change it, or type “change X to Y”.'
+        : x.message === 'signedout' ? 'You were signed out. Exit, sign in again, and reopen the editor.'
+        : 'That didn’t work. Try again, or click the text to change it yourself.';
+      return false;
+    }
+    convo.push({ req, note: String(result.note || '') });
+    const group = 'run' + Date.now(); let n = 0, first = null;
+    for (const c of result.changes || []) {
+      const it = byKey[c.key]; const t = typeof c.text === 'string' ? c.text : c.en;
+      if (!it || typeof t !== 'string' || !t.trim() || t.trim() === currentText(it).en) continue;
+      applyText(c.key, t.trim(), group); n++;
+      first = first || it.node.parentElement;
+    }
+    const p = result.picture;
+    if (p && attached && C.imgs.some(i => i.dataset.origSrc === p.key)) {
+      applyImg(p.key, { type: 'img', src: attached.src, alt: (p.description || currentImg(p.key).alt || '').trim() }, group); n++;
+      first = first || C.imgs.find(i => i.dataset.origSrc === p.key);
+      attached = null; document.querySelectorAll('.mim-run-file').forEach(f => { f.value = ''; });
+    }
+    if (p && !attached && !n) { msgEl.textContent = 'Attach the new picture with the picture button, then press Run again.'; return false; }
+    if (!n && fallback()) return true;
+    msgEl.textContent = plainNote(result.note) || (n ? 'Done.' : 'Nothing on the page matched that.');
+    if (first && !scope) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (n && scope) place(sel, scope);
+    return n > 0;
+  }
+
+  $('#mim-run-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('#mim-run-go'); btn.disabled = true;
+    const ok = await run($('#mim-run-input').value, $('#mim-run-msg'));
+    if (ok) $('#mim-run-input').value = '';
+    btn.disabled = false;
+  });
+  $('#mim-run-file').addEventListener('change', e => attach(e.target.files[0], $('#mim-run-msg')));
+
+  /* ---------- commit ---------- */
+  function summary(p) {
+    return Object.entries(p).map(([k, v]) => v.type === 'img'
+      ? 'Picture: ' + short(k.slice(4).split('/').pop().split('?')[0], 40)
+      : '“' + short(byKey[k].orig, 40) + '” → “' + short(v.en, 40) + '”');
+  }
+  $('#mim-commit').addEventListener('click', () => {
+    const ul = $('#mim-c-list'); ul.replaceChildren();
+    for (const s of summary(pending)) ul.append(el('li', null, s));
+    $('#mim-c-msg').textContent = ''; $('#mim-c-note').value = '';
+    $('#mim-c-where').textContent = 'This goes live for every visitor on soberollers.com in about a minute.';
+    cDlg.showModal();
+  });
+
+  function nextState(base, changes, label) {
+    const s = { v: 1, text: { ...base.text }, img: { ...base.img }, history: [...(base.history || [])] };
+    for (const [k, v] of Object.entries(changes)) {
+      if (v.type === 'img') { const src = k.slice(4); const im0 = C.imgs.find(i => i.dataset.origSrc === src); if (im0 && v.src === im0.dataset.origUrl && v.alt === im0.dataset.origAlt) delete s.img[src]; else s.img[src] = { src: v.src, alt: v.alt }; }
+      else { const it = byKey[k]; if (v.en === it.orig) delete s.text[k]; else s.text[k] = { orig: it.orig, en: v.en }; }
+    }
+    s.history.unshift({ at: new Date().toISOString(), label, text: s.text, img: s.img });
+    s.history = s.history.slice(0, 15);
+    return s;
+  }
+
+  async function publish(state, statusEl, after) {
+    if (!admin().token) throw new Error('signedout');
+    const uploaded = {};
+    const up = async src => {
+      if (!String(src).startsWith('data:')) return src;
+      if (uploaded[src]) return uploaded[src];
+      statusEl.textContent = 'Uploading picture…';
+      const r = await fetch(api() + '/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: admin().token, dataUrl: src }) });
+      if (r.status === 401) throw new Error('signedout');
+      if (!r.ok) throw new Error('server');
+      return (uploaded[src] = (await r.json()).url);
+    };
+    for (const v of Object.values(state.img)) v.src = await up(v.src);
+    for (const h of state.history || []) for (const v of Object.values(h.img || {})) v.src = await up(v.src);
+    statusEl.textContent = 'Publishing…';
+    state.saved_at = new Date().toISOString();
+    const r = await fetch(api() + '/content', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: admin().token, content: state }) });
+    if (r.status === 401) throw new Error('signedout');
+    if (r.status === 409) { const x = new Error('conflict'); x.code = 'conflict'; throw x; }
+    if (!r.ok) throw new Error('server');
+    const stamp = (await r.json()).stamp || state.saved_at;
+    // Wait until the new version of the site is online, then reload it
+    const t0 = Date.now();
+    while (Date.now() - t0 < 300000) {
+      const secs = Math.round((Date.now() - t0) / 1000);
+      statusEl.textContent = 'Saved. Updating your website… (' + secs + 's)';
+      await new Promise(res => setTimeout(res, 5000));
+      try { const t = await (await fetch('/?v=' + Date.now(), { cache: 'no-store' })).text(); if (t.includes(stamp)) break; } catch {}
+    }
+    statusEl.textContent = 'Published! Reloading…';
+    try { sessionStorage.setItem('sbr-after', after || 'history'); } catch {}
+    setTimeout(() => location.reload(), 600);
+  }
+
+  $('#mim-c-go').addEventListener('click', async () => {
+    const go = $('#mim-c-go'), msg = $('#mim-c-msg');
+    const label = $('#mim-c-note').value.trim() || summary(pending).slice(0, 2).join('; ') + (Object.keys(pending).length > 2 ? '; …' : '');
+    go.disabled = true; msg.textContent = 'Saving…';
+    try { await publish(nextState(C.state, pending, label), msg, 'history'); }
+    catch (x) {
+      msg.textContent = x.message === 'signedout' ? 'You were signed out. Your changes are still here: sign in again from another tab, then press Commit again.'
+        : x.code === 'conflict' ? 'Someone else published at the same time. Reload the page and make your change again.'
+        : 'Couldn’t publish. Your changes are still here — try again.';
+      go.disabled = false;
+    }
+  });
+
+  /* ---------- history (shown in the admin dashboard) ---------- */
+  function renderHistory() {
+    const ul = $('#adm-history'); if (!ul) return; ul.replaceChildren();
+    const h = C.state.history || [];
+    const add = (label, at, i) => {
+      const li = el('li'); const info = el('div');
+      info.append(el('strong', null, label), el('small', null, at ? new Date(at).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Before any edits'));
+      li.append(info);
+      if (i === 0) li.append(el('span', 'adm-pill is-paid', 'Live now'));
+      else { const b = el('button', 'adm-btn-ghost', 'Restore'); b.type = 'button'; b.addEventListener('click', () => restore(i, b)); li.append(b); }
+      ul.append(li);
+    };
+    h.forEach((e, i) => add(e.label || 'Update', e.at, i));
+    add('Original website', null, h.length ? -1 : 0);
+    const m = $('#adm-edit-mode'); if (m) m.textContent = 'Connected to your live website. Commits publish for every visitor on soberollers.com.';
+  }
+  async function restore(i, btn) {
+    const snap = i === -1 ? { text: {}, img: {} } : C.state.history[i];
+    const label = 'Restored: ' + (i === -1 ? 'Original website' : snap.label);
+    const s = { v: 1, text: { ...snap.text }, img: { ...snap.img }, history: C.state.history };
+    s.history = [{ at: new Date().toISOString(), label, text: s.text, img: s.img }, ...s.history].slice(0, 15);
+    btn.disabled = true; const st = $('#adm-history-msg');
+    try { await publish(s, st, 'history'); }
+    catch (x) { st.textContent = x.message === 'signedout' ? 'You were signed out. Sign in again.' : 'Couldn’t restore. Try again.'; btn.disabled = false; }
+  }
+
+  window.MIM_EDITOR = { start, renderHistory };
+})();
+</script>
+
 <script>
 (function(){
   var titles={"home": "SOBEROLLERS Miami Beach | SobeRollers Skating Club in Miami Beach", "events": "Events | Soberollers", "lessons": "Our Team | Soberollers", "shop": "Rollerblade Skates in Miami | SoBe Rollers Shop", "contact": "CONTACT | SobeRollers", "our-team": "Our Team | Soberollers", "media": "Media | Soberollers", "faq": "FAQ | Soberollers", "skater-migration": "Skater Migration | Soberollers", "plans-pricing": "Plans &amp; Pricing | SobeRollers", "groups": "Groups | soberollers", "cart": "P\u00e1gina del carrito | SobeRollers", "event-first-friday-skate-2021-12-03-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-01-07-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-02-04-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-03-04-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-04-01-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-05-06-19-00": "First Friday Skate | SobeRollers", "event-first-friday-skate-2022-06-03-19-00": "First Friday Skate | SobeRollers", "event-let-us-check-your-skates-and-register-early": "Let us check your skates and register early! | SobeRollers", "event-saturday-night-off-skate-time": "Saturday night off-Skate time! | SobeRollers", "event-skater-migration-2022-3": "First Friday Skate!", "event-skater-migration-2022-4": "Saturday Beach Skate! | SobeRollers", "event-skater-migration-2022-5": "Sunday Funday Skate! | SobeRollers", "event-skater-migration-2022": "Thursday Night NEON Skate!", "event-skater-migration-2024-1": "Skater Migration 2024 | Soberollers", "event-skater-migration-2025": "Skater Migration 2025 | SobeRollers", "event-sunday-funday-skate-1": "Skater Migration 2023 | Soberollers"}, nav=document.getElementById('mainnav'), tog=document.querySelector('.menu-toggle'), sub=document.querySelector('.has-sub');

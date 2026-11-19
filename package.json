@@ -1,0 +1,8 @@
+{
+  "name": "soberollers-admin",
+  "private": true,
+  "type": "module",
+  "description": "SoBe Rollers admin server: sign-in, website edits, pictures, AI",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" }
+}
