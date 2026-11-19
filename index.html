@@ -1236,6 +1236,7 @@ window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onr
     const r = await fetch(api() + '/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: admin().token, prompt, tier }) });
     if (r.status === 503) throw new Error('nokey');
     if (r.status === 401) throw new Error('signedout');
+    if (r.status === 502 || r.status === 429) throw new Error('busy');
     if (!r.ok) throw new Error('server');
     return { text: (await r.json()).text || '' };
   }
@@ -1367,6 +1368,19 @@ window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onr
     const items = C.texts.filter(t => inScope(t.node)).map(t => ({ key: t.key, text: currentText(t).en }));
     const pics = [...new Set(C.imgs.filter(i => scope ? (i === scope || scope.contains(i)) : !(i.closest('.route') || {}).hidden).map(i => i.dataset.origSrc))].map(src => ({ key: src, description: currentImg(src).alt }));
     const fallback = () => {
+      // Something is selected and the request says what it should say: change that one thing directly
+      const sayM = scope && !attached && req.match(/^(?:please\s+|pls\s+)?(?:(?:change|make|update|edit|set|rename|switch)\s+(?:it|this|that)?\s*)?(?:to\s+)?(?:say|read|show|be)s?\s*[:\-]?\s*["“'‘]?(.+?)["”'’]?\s*[.!]*$/i);
+      if (sayM && sayM[1].trim()) {
+        const its = C.texts.filter(t => scope.contains(t.node));
+        if (its.length === 1) {
+          const to = sayM[1].trim();
+          applyText(its[0].key, to, 'say' + Date.now());
+          convo.push({ req, note: 'Changed it to "' + to + '".' });
+          msgEl.textContent = 'Changed it to “' + to + '”.';
+          place(sel, scope);
+          return true;
+        }
+      }
       const lit = literal(req); if (!lit || attached) return false;
       const n = replaceAll(lit.from, lit.to, scope ? inScope : () => true); if (!n) return false;
       convo.push({ req, note: 'Replaced "' + lit.from + '" with "' + lit.to + '" in ' + n + (n === 1 ? ' place.' : ' places.') });
@@ -1399,7 +1413,7 @@ window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onr
         const m = String(r.text || '').replace(/```(json)?/g, '').match(/\{[\s\S]*\}/); if (!m) throw new Error('parse');
         return JSON.parse(m[0]);
       };
-      result = await ask(prompt);
+      result = await ask(prompt).catch(e => (e && (e.message === 'parse' || e instanceof SyntaxError)) ? ask(prompt + '\n\nReply with ONLY the JSON object, nothing else.') : Promise.reject(e));
       const empty = !(result.changes || []).some(c => byKey[c.key] && c.text && c.text.trim() && c.text.trim() !== currentText(byKey[c.key]).en) && !(result.picture && attached);
       if (empty) {
         msgEl.textContent = 'Working on it… (second try)';
@@ -1410,6 +1424,7 @@ window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onr
       if (fallback()) return true;
       msgEl.textContent = x.message === 'nokey' ? 'The AI isn’t set up yet: add your Anthropic API key in the server settings. You can still click any text to change it, or type “change X to Y”.'
         : x.message === 'signedout' ? 'You were signed out. Exit, sign in again, and reopen the editor.'
+        : x.message === 'busy' ? 'The AI is busy right now. Wait a few seconds and press Run again.'
         : 'That didn’t work. Try again, or click the text to change it yourself.';
       return false;
     }
