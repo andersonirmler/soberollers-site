@@ -1746,8 +1746,18 @@ window.ADMIN_CONFIG = { apiUrl: window.SBR_API || 'https://soberollers-admin.onr
   function showReg(v) {
     regView = v;
     if (!window.MIM_REG) return;
-    if (v) window.MIM_REG.preview(v === 'reg-done' ? 'done' : Number(v.slice(4))); else window.MIM_REG.closePreview();
+    if (v) { window.MIM_REG.preview(v === 'reg-done' ? 'done' : Number(v.slice(4))); fitReg(); } else { window.MIM_REG.closePreview(); if (regDlg) { regDlg.style.height = regDlg.style.maxHeight = ''; } }
   }
+  // keep the previewed form above the editing bar (the bar is taller on phones)
+  function fitReg() {
+    if (!regView || !regDlg || !regDlg.open) return;
+    const b = document.getElementById('mim-edit-bar');
+    const top = regDlg.getBoundingClientRect().top;
+    const h = Math.max(220, (b && !b.hidden ? b.getBoundingClientRect().top : window.innerHeight) - top - 10);
+    regDlg.style.height = regDlg.style.maxHeight = h + 'px';
+  }
+  window.addEventListener('resize', fitReg);
+  if (window.ResizeObserver) { const bEl = document.getElementById('mim-edit-bar'); if (bEl) new ResizeObserver(fitReg).observe(bEl); }
   const currentRoute = () => { const id = (location.hash || '#home').slice(1); return routes.some(r => r.dataset.route === id) ? id : 'home'; };
   const visible = n => {
     const p = n.parentElement; if (!p) return false;
